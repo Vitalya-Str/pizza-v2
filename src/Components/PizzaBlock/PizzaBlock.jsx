@@ -39,7 +39,7 @@ export const PizzaBlock = ({ title, types, sizes, price, imageUrl }) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>2</i>
+          <i>0</i>
         </div>
       </div>
     </div>
