@@ -4,7 +4,7 @@ import { PizzaBlock } from "../PizzaBlock/PizzaBlock";
 import { Sort } from "./Sort";
 import { Categories } from "./Categories";
 
-export const Home = () => {
+export const Home = ({ searchItem }) => {
   const [items, setItems] = useState([]);
   const [isLoader, setIsLoader] = useState(true);
   const [categoryIndex, setCategoryIndex] = useState(0);
@@ -14,18 +14,19 @@ export const Home = () => {
   });
   const [orderType, setOrderType] = useState("asc");
 
-  const category = categoryIndex === 0 ? "" : `category=${categoryIndex}`;
+  const category = categoryIndex === 0 ? "" : `&category=${categoryIndex}`;
+  const searchPizza = !searchItem ? "" : `&search=${searchItem}`;
 
   useEffect(() => {
     setIsLoader(true);
-    fetch(`https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2?${category}&sortBy=${sortList.sortProperty}&order=${orderType}`)
+    fetch(`https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2?${searchPizza}${category}&sortBy=${sortList.sortProperty}&order=${orderType}`)
       .then((res) => res.json())
       .then((res) => {
         setItems(res);
         setIsLoader(false);
       });
     window.scrollTo(0, 0);
-  }, [category, sortList, orderType]);
+  }, [category, sortList, orderType, searchPizza]);
   return (
     <>
       <div className="container">

@@ -23,7 +23,6 @@ export const Sort = ({ sortList, setSortList, setOrderType, orderType }) => {
     setSortList(i);
     setOpen(!open);
   };
-  console.log(orderType);
 
   return (
     <div className="sort">
