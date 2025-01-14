@@ -7,21 +7,31 @@ import { Categories } from "./Categories";
 export const Home = () => {
   const [items, setItems] = useState([]);
   const [isLoader, setIsLoader] = useState(true);
+  const [categoryIndex, setCategoryIndex] = useState(0);
+  const [sortList, setSortList] = useState({
+    name: "популярности",
+    sortProperty: "rating",
+  });
+  const [orderType, setOrderType] = useState("asc");
+
+  const category = categoryIndex === 0 ? "" : `category=${categoryIndex}`;
 
   useEffect(() => {
-    fetch("https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2")
+    setIsLoader(true);
+    fetch(`https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2?${category}&sortBy=${sortList.sortProperty}&order=${orderType}`)
+      .then((res) => res.json())
       .then((res) => {
-        return res.json();
-      })
-      .then((res) => setItems(res));
-    setIsLoader(false);
-  }, []);
+        setItems(res);
+        setIsLoader(false);
+      });
+    window.scrollTo(0, 0);
+  }, [category, sortList, orderType]);
   return (
     <>
       <div className="container">
         <div className="content__top">
-          <Categories />
-          <Sort />
+          <Categories categoryIndex={categoryIndex} setCategoryIndex={setCategoryIndex} />
+          <Sort sortList={sortList} setSortList={setSortList} setOrderType={setOrderType} orderType={orderType} />
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">

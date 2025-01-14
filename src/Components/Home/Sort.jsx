@@ -1,16 +1,29 @@
 import { useState } from "react";
+import s from "./Sort.module.scss";
 
-export const Sort = () => {
+export const Sort = ({ sortList, setSortList, setOrderType, orderType }) => {
   const [open, setOpen] = useState(false);
-  const [sortList, setSortList] = useState(0);
 
-  const list = ["популярности", "цене", "алфавиту"];
-  const listItem = list[sortList];
+  const list = [
+    {
+      name: "популярности",
+      sortProperty: "rating",
+    },
+    {
+      name: "цене",
+      sortProperty: "price",
+    },
+    {
+      name: "алфавиту",
+      sortProperty: "title",
+    },
+  ];
 
   const setSortListItem = (i) => {
     setSortList(i);
     setOpen(!open);
   };
+  console.log(orderType);
 
   return (
     <div className="sort">
@@ -22,14 +35,22 @@ export const Sort = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{listItem}</span>
+        <div className={s.root}>
+          <button className={orderType === "asc" ? s.activeButton : ""} onClick={() => setOrderType("asc")}>
+            ↑
+          </button>
+          <button className={orderType === "desc" ? s.activeButton : ""} onClick={() => setOrderType("desc")}>
+            ↓
+          </button>
+        </div>
+        <span onClick={() => setOpen(!open)}>{sortList.name}</span>
       </div>
       {open && (
         <div className="sort__popup">
           <ul>
-            {list.map((lable, i) => (
-              <li key={i} onClick={() => setSortListItem(i)} className={sortList === i ? "active" : ""}>
-                {lable}
+            {list.map((obj, i) => (
+              <li key={i} onClick={() => setSortListItem(obj)} className={sortList.name === obj.name ? "active" : ""}>
+                {obj.name}
               </li>
             ))}
           </ul>
