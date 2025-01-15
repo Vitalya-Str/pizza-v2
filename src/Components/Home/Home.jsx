@@ -3,18 +3,35 @@ import Skeleton from "../PizzaBlock/Skeleton";
 import { PizzaBlock } from "../PizzaBlock/PizzaBlock";
 import { Sort } from "./Sort";
 import { Categories } from "./Categories";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategoryIndex, setOrderType, setSortList } from "../redux/slice/filterSlice";
+import { setItems } from "../redux/slice/pizzaSlice";
 
-export const Home = ({ searchItem }) => {
-  const [items, setItems] = useState([]);
+export const Home = () => {
+  const categoryId = useSelector((state) => state.filter.categoryIndex);
+  const sortList = useSelector((state) => state.filter.sortList);
+  const orderType = useSelector((state) => state.filter.orderType);
+  const searchItem = useSelector((state) => state.filter.searchItem);
+  const items = useSelector((state) => state.pizza.items);
+
   const [isLoader, setIsLoader] = useState(true);
-  const [categoryIndex, setCategoryIndex] = useState(0);
-  const [sortList, setSortList] = useState({
-    name: "популярности",
-    sortProperty: "rating",
-  });
-  const [orderType, setOrderType] = useState("asc");
 
-  const category = categoryIndex === 0 ? "" : `&category=${categoryIndex}`;
+  const dispatch = useDispatch();
+
+  const onSetItems = (items) => {
+    dispatch(setItems(items));
+  };
+  const onOrderType = (text) => {
+    dispatch(setOrderType(text));
+  };
+  const onSortList = (obj) => {
+    dispatch(setSortList(obj));
+  };
+  const onCategoryIndex = (id) => {
+    dispatch(setCategoryIndex(id));
+  };
+
+  const category = categoryId === 0 ? "" : `&category=${categoryId}`;
   const searchPizza = !searchItem ? "" : `&search=${searchItem}`;
 
   useEffect(() => {
@@ -22,7 +39,7 @@ export const Home = ({ searchItem }) => {
     fetch(`https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2?${searchPizza}${category}&sortBy=${sortList.sortProperty}&order=${orderType}`)
       .then((res) => res.json())
       .then((res) => {
-        setItems(res);
+        onSetItems(res);
         setIsLoader(false);
       });
     window.scrollTo(0, 0);
@@ -31,8 +48,8 @@ export const Home = ({ searchItem }) => {
     <>
       <div className="container">
         <div className="content__top">
-          <Categories categoryIndex={categoryIndex} setCategoryIndex={setCategoryIndex} />
-          <Sort sortList={sortList} setSortList={setSortList} setOrderType={setOrderType} orderType={orderType} />
+          <Categories categoryIndex={categoryId} onCategoryIndex={onCategoryIndex} />
+          <Sort sortList={sortList} setSortList={onSortList} setOrderType={onOrderType} orderType={orderType} />
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
