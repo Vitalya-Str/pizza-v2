@@ -1,5 +1,6 @@
 .searchContainer {
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
   margin: 20px 0;
@@ -14,17 +15,18 @@
   position: relative;
 }
 
-// .searchButton {
-//   padding: 10px 20px;
-//   margin-left: 10px;
-//   border: none;
-//   border-radius: 4px;
-//   background-color: #ff6347;
-//   color: white;
-//   font-size: 16px;
-//   cursor: pointer;
-// }
+.clearButton {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  color: #ccc;
+}
 
-// .searchButton:hover {
-//   background-color: #ff4500;
-// }
+.clearButton:hover {
+  color: #ff6347;
+}

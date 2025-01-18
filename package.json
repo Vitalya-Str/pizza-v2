@@ -4,14 +4,17 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
+    "axios": "^1.7.9",
     "cra-template": "1.2.0",
+    "lodash.debounce": "^4.0.8",
     "react": "^19.0.0",
     "react-content-loader": "^7.0.2",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.28.1",
     "react-scripts": "5.0.1",
-    "sass": "^1.83.1"
+    "sass": "^1.83.1",
+    "use-debounce": "^10.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
