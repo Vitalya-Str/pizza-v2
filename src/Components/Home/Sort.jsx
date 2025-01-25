@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import s from "./Sort.module.scss";
 
 export const list = [
@@ -19,13 +19,26 @@ export const list = [
 export const Sort = ({ sortList, setSortList, setOrderType, orderType }) => {
   const [open, setOpen] = useState(false);
 
+  const sortRef = useRef();
+
   const setSortListItem = (i) => {
     setSortList(i);
     setOpen(!open);
   };
 
+  useEffect(() => {
+    const handleSubmitSort = (event) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setOpen(false);
+      }
+    };
+    document.body.addEventListener("click", handleSubmitSort);
+
+    return () => document.body.removeEventListener("click", handleSubmitSort);
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path

@@ -39,7 +39,6 @@ export const Home = () => {
   useEffect(() => {
     if (window.location.search) {
       const params = QueryString.parse(window.location.search.substring(1));
-      console.log(params);
 
       const sortList = list.find((obj) => obj.sortProperty === params.sortList);
       dispatch(
