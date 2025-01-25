@@ -1,23 +1,23 @@
 import { useState } from "react";
 import s from "./Sort.module.scss";
 
+export const list = [
+  {
+    name: "популярности",
+    sortProperty: "rating",
+  },
+  {
+    name: "цене",
+    sortProperty: "price",
+  },
+  {
+    name: "алфавиту",
+    sortProperty: "title",
+  },
+];
+
 export const Sort = ({ sortList, setSortList, setOrderType, orderType }) => {
   const [open, setOpen] = useState(false);
-
-  const list = [
-    {
-      name: "популярности",
-      sortProperty: "rating",
-    },
-    {
-      name: "цене",
-      sortProperty: "price",
-    },
-    {
-      name: "алфавиту",
-      sortProperty: "title",
-    },
-  ];
 
   const setSortListItem = (i) => {
     setSortList(i);

@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import { PizzaBlock } from "../PizzaBlock/PizzaBlock";
-import { Sort } from "./Sort";
+import { list, Sort } from "./Sort";
 import { Categories } from "./Categories";
 import { useDispatch, useSelector } from "react-redux";
-import { setCategoryIndex, setOrderType, setSortList } from "../redux/slice/filterSlice";
+import { setCategoryIndex, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
 import { setItems } from "../redux/slice/pizzaSlice";
 import axios from "axios";
+import QueryString from "qs";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
-  const { categoryIndex, sortList, orderType, searchItem } = useSelector((state) => state.filter);
+  const { category, sortList, orderType, searchItem } = useSelector((state) => state.filter);
   const items = useSelector((state) => state.pizza.items);
+  const navigate = useNavigate();
+  const isSearch = useRef(false);
 
   const [isLoader, setIsLoader] = useState(true);
 
@@ -29,13 +33,38 @@ export const Home = () => {
     dispatch(setCategoryIndex(id));
   };
 
-  const category = categoryIndex === 0 ? "" : `&category=${categoryIndex}`;
+  const categoryId = category === 0 ? "" : `&category=${category}`;
   const searchPizza = !searchItem ? "" : `&search=${searchItem}`;
 
   useEffect(() => {
+    if (window.location.search) {
+      const params = QueryString.parse(window.location.search.substring(1));
+      console.log(params);
+
+      const sortList = list.find((obj) => obj.sortProperty === params.sortList);
+      dispatch(
+        setFilter({
+          ...params,
+          sortList,
+        })
+      );
+      isSearch.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    const queryString = QueryString.stringify({
+      category,
+      sortList: sortList.sortProperty,
+      orderType,
+    });
+    navigate(`?${queryString}`);
+  }, [category, sortList.sortProperty, orderType]);
+
+  const setPizzasItem = () => {
     setIsLoader(true);
     axios
-      .get(`https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2?${searchPizza}${category}&sortBy=${sortList.sortProperty}&order=${orderType}`)
+      .get(`https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2?${searchPizza}${categoryId}&sortBy=${sortList.sortProperty}&order=${orderType}`)
       .then((res) => {
         onSetItems(res.data);
         setIsLoader(false);
@@ -44,14 +73,20 @@ export const Home = () => {
         onSetItems([]);
         setIsLoader(false);
       });
+  };
 
+  useEffect(() => {
+    setPizzasItem();
     window.scrollTo(0, 0);
-  }, [category, sortList, orderType, searchPizza]);
+    if (!isSearch.current) {
+      setPizzasItem();
+    }
+  }, [categoryId, sortList.sortProperty, orderType, searchPizza]);
   return (
     <>
       <div className="container">
         <div className="content__top">
-          <Categories categoryIndex={categoryIndex} onCategoryIndex={onCategoryIndex} />
+          <Categories categoryIndex={category} onCategoryIndex={onCategoryIndex} />
           <Sort sortList={sortList} setSortList={onSortList} setOrderType={onOrderType} orderType={orderType} />
         </div>
         <h2 className="content__title">Все пиццы</h2>

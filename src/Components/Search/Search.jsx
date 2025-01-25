@@ -1,19 +1,19 @@
 import s from "./Search.module.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSearchItem } from "../redux/slice/filterSlice";
 import { useCallback, useRef, useState } from "react";
 import debounce from "lodash.debounce";
 
 const Search = () => {
-  const searchItem = useSelector((state) => state.filter.searchItem);
   const [value, setValue] = useState("");
 
   const inputRef = useRef();
 
   const dispatch = useDispatch();
 
-  const onSearchItem = (e) => {
+  const onSearchItem = () => {
     setValue("");
+    dispatch(setSearchItem(""));
     inputRef.current.focus();
   };
 
