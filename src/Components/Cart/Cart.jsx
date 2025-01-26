@@ -2,13 +2,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { clearItems } from "../redux/slice/cartSlice";
 import CartItem from "./CartItem";
+import CartEmpty from "./CartEmpty";
 
 export const Cart = () => {
-  const { items } = useSelector((state) => state.cart);
+  const { items, totalPrice } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
 
-  const clearCart = () => dispatch(clearItems([]));
+  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+
+  const clearItem = () => {
+    if (window.confirm("Clear?")) dispatch(clearItems());
+  };
+  if (!totalPrice) {
+    return <CartEmpty />;
+  }
 
   return (
     <div className="content">
@@ -41,7 +49,7 @@ export const Cart = () => {
               </svg>
               Корзина
             </h2>
-            <div onClick={clearCart} className="cart__clear">
+            <div onClick={clearItem} className="cart__clear">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.5 5H4.16667H17.5" stroke="#B6B6B6" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 <path
@@ -66,10 +74,10 @@ export const Cart = () => {
           <div className="cart__bottom">
             <div className="cart__bottom-details">
               <span>
-                Всего пицц: <b>3 шт.</b>
+                Всего пицц: <b>{totalCount} шт.</b>
               </span>
               <span>
-                Сумма заказа: <b>900 ₽</b>
+                Сумма заказа: <b>{totalPrice} ₽</b>
               </span>
             </div>
             <div className="cart__bottom-buttons">

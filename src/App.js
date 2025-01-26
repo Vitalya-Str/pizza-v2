@@ -4,7 +4,7 @@ import { Home } from "./Components/Home/Home";
 import { Header } from "./Components/Header";
 import { NotFound } from "./Components/NotFound/NotFound";
 import { Cart } from "./Components/Cart/Cart";
-import React, { useState } from "react";
+import React from "react";
 
 function App() {
   return (
