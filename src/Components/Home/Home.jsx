@@ -4,14 +4,14 @@ import { PizzaBlock } from "../PizzaBlock/PizzaBlock";
 import { list, Sort } from "./Sort";
 import { Categories } from "./Categories";
 import { useDispatch, useSelector } from "react-redux";
-import { setCategoryIndex, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
-import { fetchPizzasItems, setItems } from "../redux/slice/pizzaSlice";
+import { filterSelector, setCategoryIndex, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
+import { fetchPizzasItems, pizzaSelector, setItems } from "../redux/slice/pizzaSlice";
 import QueryString from "qs";
 import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
-  const { category, sortList, orderType, searchItem } = useSelector((state) => state.filter);
-  const { items, status } = useSelector((state) => state.pizza);
+  const { category, sortList, orderType, searchItem } = useSelector(filterSelector);
+  const { items, status } = useSelector(pizzaSelector);
   const navigate = useNavigate();
   const isSearch = useRef(false);
 
