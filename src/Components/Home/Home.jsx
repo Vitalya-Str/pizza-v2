@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterSelector, setCategoryIndex, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
 import { fetchPizzasItems, pizzaSelector, setItems } from "../redux/slice/pizzaSlice";
 import QueryString from "qs";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const { category, sortList, orderType, searchItem } = useSelector(filterSelector);
@@ -76,7 +76,11 @@ export const Home = () => {
         <div className="content__items">
           {status === "loading"
             ? [...new Array(8)].map((_, i) => <Skeleton key={i} />)
-            : items.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
+            : items.map((pizza) => (
+                <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
+                  <PizzaBlock {...pizza} />
+                </Link>
+              ))}
         </div>
       </div>
     </>

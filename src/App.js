@@ -5,6 +5,7 @@ import { Header } from "./Components/Header";
 import { NotFound } from "./Components/NotFound/NotFound";
 import { Cart } from "./Components/Cart/Cart";
 import React from "react";
+import Pizza from "./Components/PizzaBlock/Pizza";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/pizza/:id" element={<Pizza />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
