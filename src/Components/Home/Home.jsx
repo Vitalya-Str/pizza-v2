@@ -76,11 +76,7 @@ export const Home = () => {
         <div className="content__items">
           {status === "loading"
             ? [...new Array(8)].map((_, i) => <Skeleton key={i} />)
-            : items.map((pizza) => (
-                <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
-                  <PizzaBlock {...pizza} />
-                </Link>
-              ))}
+            : items.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
         </div>
       </div>
     </>
