@@ -1,14 +1,18 @@
-declare module '*.jpg' {
-    const src: string;
+declare module "*.jpg" {
+  const content: any;
+  export default content;
 }
 
-declare module '*.png' {
-    const src: string;
+declare module "*.png" {
+  const content: any;
+  export default content;
 }
 
-declare module '*.svg' 
-
-declare module '*.module.css' {
-    const classes: { readonly [key: string]: string };
+declare module "*.svg" {
+  const content: any;
+  export default content;
 }
 
+declare module "*.module.css" {
+  const classes: { readonly [key: string]: string };
+}

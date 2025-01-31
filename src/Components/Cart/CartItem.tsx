@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { addItems, itemsMinus, removeItems } from "../redux/slice/cartSlice";
-import React, { FC } from "react";
+import { FC } from "react";
 
 export type CartItemTypes = {
   count: number;
