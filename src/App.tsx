@@ -5,6 +5,7 @@ import { Header } from "./Components/Header";
 import { NotFound } from "./Components/NotFound/NotFound";
 import { Cart } from "./Components/Cart/Cart";
 import Pizza from "./Components/PizzaBlock/Pizza";
+import React from "react";
 
 function App() {
   return (
