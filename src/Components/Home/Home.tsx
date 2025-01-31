@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import { PizzaBlock } from "../PizzaBlock/PizzaBlock";
 import { list, Sort } from "./Sort";
@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterSelector, setCategoryIndex, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
 import { fetchPizzasItems, pizzaSelector, setItems } from "../redux/slice/pizzaSlice";
 import QueryString from "qs";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export const Home = () => {
+export const Home: FC = () => {
   const { category, sortList, orderType, searchItem } = useSelector(filterSelector);
   const { items, status } = useSelector(pizzaSelector);
   const navigate = useNavigate();
@@ -17,13 +17,13 @@ export const Home = () => {
 
   const dispatch = useDispatch();
 
-  const onOrderType = (text) => {
+  const onOrderType = (text: string) => {
     dispatch(setOrderType(text));
   };
-  const onSortList = (obj) => {
+  const onSortList = (obj: any) => {
     dispatch(setSortList(obj));
   };
-  const onCategoryIndex = (id) => {
+  const onCategoryIndex = (id: number) => {
     dispatch(setCategoryIndex(id));
   };
 
@@ -55,6 +55,7 @@ export const Home = () => {
   }, [category, sortList.sortProperty, orderType]);
 
   const setPizzasItem = () => {
+    //@ts-ignore
     dispatch(fetchPizzasItems({ searchPizza, categoryId, sortList, orderType }));
   };
 

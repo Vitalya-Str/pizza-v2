@@ -4,7 +4,6 @@ import { Home } from "./Components/Home/Home";
 import { Header } from "./Components/Header";
 import { NotFound } from "./Components/NotFound/NotFound";
 import { Cart } from "./Components/Cart/Cart";
-import React from "react";
 import Pizza from "./Components/PizzaBlock/Pizza";
 
 function App() {

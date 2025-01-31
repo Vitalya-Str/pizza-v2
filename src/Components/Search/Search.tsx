@@ -3,18 +3,19 @@ import { useDispatch } from "react-redux";
 import { setSearchItem } from "../redux/slice/filterSlice";
 import { useCallback, useRef, useState } from "react";
 import debounce from "lodash.debounce";
+import React, { FC } from "react";
 
-const Search = () => {
+const Search: FC = () => {
   const [value, setValue] = useState("");
 
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
 
   const onSearchItem = () => {
     setValue("");
     dispatch(setSearchItem(""));
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   const onSetSearchValue = (value) => {
@@ -40,7 +41,7 @@ const Search = () => {
         placeholder="Поиск пиццы..."
       />
       {value && (
-        <button className={s.clearButton} onClick={() => onSearchItem("")}>
+        <button className={s.clearButton} onClick={() => onSearchItem()}>
           ✕
         </button>
       )}

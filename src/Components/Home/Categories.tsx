@@ -1,4 +1,11 @@
-export const Categories = ({ categoryIndex, onCategoryIndex }) => {
+import React, { FC } from "react";
+
+type CategoriesType = {
+  categoryIndex: number;
+  onCategoryIndex: (inx: number) => void;
+};
+
+export const Categories: FC<CategoriesType> = ({ categoryIndex, onCategoryIndex }) => {
   const categories = ["Все", "Мясные", "Вегетарианская", "Гриль", "Острые", "Закрытые"];
 
   return (

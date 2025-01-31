@@ -1,9 +1,17 @@
-import { useState } from "react";
+import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItems, cartItemSelector } from "../redux/slice/cartSlice";
 import { Link } from "react-router-dom";
 
-export const PizzaBlock = ({ id, title, types, sizes, price, imageUrl }) => {
+type PizzaBlockType = {
+  id: number;
+  title: string;
+  types: any;
+  sizes: any;
+  price: number;
+};
+
+export const PizzaBlock: FC<PizzaBlockType> = ({ id, title, types, sizes, price }) => {
   const cartItem = useSelector(cartItemSelector(id));
 
   const addedCart = cartItem ? cartItem.count : 0;
@@ -29,10 +37,9 @@ export const PizzaBlock = ({ id, title, types, sizes, price, imageUrl }) => {
 
   return (
     <div className="pizza-block">
-      <Link  to={`/pizza/${id}`}>
+      <Link to={`/pizza/${id}`}>
         <img
           className="pizza-block__image"
-          s
           src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
           alt="Pizza"
         />
@@ -40,14 +47,14 @@ export const PizzaBlock = ({ id, title, types, sizes, price, imageUrl }) => {
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          {types.map((t) => (
+          {types.map((t: any) => (
             <li key={t} onClick={() => setTypeActive(t)} className={typeActive === t ? "active" : ""}>
               {typesNames[t]}
             </li>
           ))}
         </ul>
         <ul>
-          {sizes.map((s, i) => (
+          {sizes.map((s: any, i: any) => (
             <li key={i} onClick={() => setSizeActive(i)} className={sizeActive === i ? "active" : ""}>
               {s} см.
             </li>

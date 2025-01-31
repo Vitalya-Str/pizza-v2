@@ -1,7 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import s from "./Sort.module.scss";
 
-export const list = [
+type ListType = {
+  name: string;
+  sortProperty: string;
+};
+
+export const list: ListType[] = [
   {
     name: "популярности",
     sortProperty: "rating",
@@ -16,18 +21,20 @@ export const list = [
   },
 ];
 
-export const Sort = ({ sortList, setSortList, setOrderType, orderType }) => {
+type SortType = {};
+
+export const Sort: FC<any> = ({ sortList, setSortList, setOrderType, orderType }) => {
   const [open, setOpen] = useState(false);
 
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
-  const setSortListItem = (i) => {
+  const setSortListItem = (i: ListType) => {
     setSortList(i);
     setOpen(!open);
   };
 
   useEffect(() => {
-    const handleSubmitSort = (event) => {
+    const handleSubmitSort = (event: any) => {
       if (!event.composedPath().includes(sortRef.current)) {
         setOpen(false);
       }
