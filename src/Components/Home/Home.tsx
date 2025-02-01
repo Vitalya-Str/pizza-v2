@@ -77,7 +77,7 @@ export const Home: FC = () => {
         <div className="content__items">
           {status === "loading"
             ? [...new Array(8)].map((_, i) => <Skeleton key={i} />)
-            : items.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
+            : items.map((pizza:any) => <PizzaBlock key={pizza.id} {...pizza} />)}
         </div>
       </div>
     </>

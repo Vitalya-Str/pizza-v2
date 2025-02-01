@@ -13,6 +13,7 @@ declare module "*.svg" {
   export default content;
 }
 
-declare module "*.module.css" {
-  const classes: { readonly [key: string]: string };
+declare module "*.scss" {
+  const content: Record<string, string>;
+  export default content;
 }
