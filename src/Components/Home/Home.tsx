@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useRef } from "react";
+import { FC, memo, useCallback, useEffect, useRef } from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import { PizzaBlock } from "../PizzaBlock/PizzaBlock";
-import { list, Sort } from "./Sort";
+import { ListType, Sort } from "./Sort";
 import { Categories } from "./Categories";
 import { useDispatch, useSelector } from "react-redux";
 import { filterSelector, setCategoryIndex, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
@@ -9,7 +9,7 @@ import { fetchPizzasItems, pizzaSelector, setItems } from "../redux/slice/pizzaS
 import QueryString from "qs";
 import { useNavigate } from "react-router-dom";
 
-export const Home: FC = () => {
+export const Home: FC = memo(() => {
   const { category, sortList, orderType, searchItem } = useSelector(filterSelector);
   const { items, status } = useSelector(pizzaSelector);
   const navigate = useNavigate();
@@ -17,33 +17,36 @@ export const Home: FC = () => {
 
   const dispatch = useDispatch();
 
-  const onOrderType = (text: string) => {
+  const onOrderType = (text: "asc" | "desc") => {
     dispatch(setOrderType(text));
   };
-  const onSortList = (obj: any) => {
+  const onSortList = (obj: ListType) => {
     dispatch(setSortList(obj));
   };
-  const onCategoryIndex = (id: number) => {
+  const onCategoryIndex = useCallback((id: number) => {
     dispatch(setCategoryIndex(id));
-  };
+  }, []);
 
   const categoryId = category === 0 ? "" : `&category=${category}`;
   const searchPizza = !searchItem ? "" : `&search=${searchItem}`;
 
-  useEffect(() => {
-    if (window.location.search) {
-      const params = QueryString.parse(window.location.search.substring(1));
+  // useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = QueryString.parse(window.location.search.substring(1));
 
-      const sortList = list.find((obj) => obj.sortProperty === params.sortList);
-      dispatch(
-        setFilter({
-          ...params,
-          sortList,
-        })
-      );
-      isSearch.current = true;
-    }
-  }, []);
+  //     const sortList = list.find((obj) => obj.sortProperty === params.sortList);
+  //     if (sortList) {
+  //       dispatch(
+  //         setFilter({
+  //           ...params,
+  //           sortList,
+  //         })
+  //       );
+  //     }
+
+  //     isSearch.current = true;
+  //   }
+  // }, []);
 
   useEffect(() => {
     const queryString = QueryString.stringify({
@@ -77,9 +80,9 @@ export const Home: FC = () => {
         <div className="content__items">
           {status === "loading"
             ? [...new Array(8)].map((_, i) => <Skeleton key={i} />)
-            : items.map((pizza:any) => <PizzaBlock key={pizza.id} {...pizza} />)}
+            : items.map((pizza: any) => <PizzaBlock key={pizza.id} {...pizza} />)}
         </div>
       </div>
     </>
   );
-};
+});

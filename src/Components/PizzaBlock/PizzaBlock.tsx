@@ -1,13 +1,13 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItems, cartItemSelector } from "../redux/slice/cartSlice";
+import { addItems, cartItemSelector, Item } from "../redux/slice/cartSlice";
 import { Link } from "react-router-dom";
 
 type PizzaBlockType = {
-  id: number;
+  id: string;
   title: string;
-  types: any;
-  sizes: any;
+  types: number[];
+  sizes: number[];
   price: number;
 };
 
@@ -25,12 +25,16 @@ export const PizzaBlock: FC<PizzaBlockType> = ({ id, title, types, sizes, price 
   const sizeName = [26, 30, 40];
 
   const onAddCartButton = () => {
-    const item = {
+    const item: Item = {
       id,
       title,
       price,
       type: typesNames[typeActive],
-      size: sizeName[sizeActive],
+      sizes: sizeName[sizeActive],
+      count: 0,
+      category: 0,
+      imageUrl: "https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg",
+      rating: 0,
     };
     dispatch(addItems(item));
   };
@@ -47,14 +51,14 @@ export const PizzaBlock: FC<PizzaBlockType> = ({ id, title, types, sizes, price 
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          {types.map((t: any) => (
+          {types.map((t: number) => (
             <li key={t} onClick={() => setTypeActive(t)} className={typeActive === t ? "active" : ""}>
               {typesNames[t]}
             </li>
           ))}
         </ul>
         <ul>
-          {sizes.map((s: any, i: any) => (
+          {sizes.map((s: number, i: number) => (
             <li key={i} onClick={() => setSizeActive(i)} className={sizeActive === i ? "active" : ""}>
               {s} см.
             </li>

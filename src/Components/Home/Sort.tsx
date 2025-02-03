@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import s from "./Sort.module.scss";
 
-type ListType = {
-  name: string;
-  sortProperty: string;
+export type ListType = {
+  name: "популярности" | "цене" | "алфавиту";
+  sortProperty: "rating" | "price" | "title";
 };
 
 export const list: ListType[] = [
@@ -21,9 +21,14 @@ export const list: ListType[] = [
   },
 ];
 
-type SortType = {};
+type SortType = {
+  sortList: ListType;
+  orderType: string;
+  setSortList: (i: ListType) => void;
+  setOrderType: (value: "asc" | "desc") => void;
+};
 
-export const Sort: FC<any> = ({ sortList, setSortList, setOrderType, orderType }) => {
+export const Sort: FC<SortType> = ({ sortList, setSortList, setOrderType, orderType }) => {
   const [open, setOpen] = useState(false);
 
   const sortRef = useRef<HTMLDivElement>(null);
@@ -34,8 +39,8 @@ export const Sort: FC<any> = ({ sortList, setSortList, setOrderType, orderType }
   };
 
   useEffect(() => {
-    const handleSubmitSort = (event: any) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const handleSubmitSort = (event: MouseEvent) => {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setOpen(false);
       }
     };
