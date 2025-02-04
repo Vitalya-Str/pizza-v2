@@ -7,6 +7,7 @@ interface FilterSlice {
   orderType: "asc" | "desc";
   searchItem: string;
   sortList: ListType;
+  currentPage: number;
 }
 
 const initialState: FilterSlice = {
@@ -17,7 +18,10 @@ const initialState: FilterSlice = {
   },
   orderType: "asc",
   searchItem: "",
+  currentPage: 1,
 };
+
+console.log(initialState.currentPage);
 
 const filterSlice = createSlice({
   name: "filter",
@@ -32,6 +36,9 @@ const filterSlice = createSlice({
     setOrderType(state, action: PayloadAction<"asc" | "desc">) {
       state.orderType = action.payload;
     },
+    setCurrentPage(state, action: PayloadAction<number>) {
+      state.currentPage = action.payload;
+    },
     setSearchItem(state, action: PayloadAction<string>) {
       state.searchItem = action.payload;
     },
@@ -45,6 +52,6 @@ const filterSlice = createSlice({
 
 export const filterSelector = (state: RootState) => state.filter;
 
-export const { setCategoryIndex, setSortList, setOrderType, setSearchItem, setFilter } = filterSlice.actions;
+export const { setCategoryIndex, setSortList, setOrderType, setSearchItem, setFilter, setCurrentPage } = filterSlice.actions;
 
 export default filterSlice.reducer;

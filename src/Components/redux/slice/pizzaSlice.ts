@@ -7,14 +7,18 @@ interface FetchPizzasItemsParams {
   categoryId: string;
   sortList: { sortProperty: string };
   orderType: string;
+  currentPage: number;
 }
 
-export const fetchPizzasItems = createAsyncThunk("pizza/fetchPizzasItems", async ({ searchPizza, categoryId, sortList, orderType }: FetchPizzasItemsParams) => {
-  const response = await axios.get(
-    `https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2?${searchPizza}${categoryId}&sortBy=${sortList.sortProperty}&order=${orderType}`
-  );
-  return response.data;
-});
+export const fetchPizzasItems = createAsyncThunk(
+  "pizza/fetchPizzasItems",
+  async ({ searchPizza, categoryId, sortList, orderType, currentPage }: FetchPizzasItemsParams) => {
+    const response = await axios.get(
+      `https://6783e7b58b6c7a1316f60805.mockapi.io/Pizza-v2?&page=${currentPage}&limit=4${searchPizza}${categoryId}&sortBy=${sortList.sortProperty}&order=${orderType}`
+    );
+    return response.data;
+  }
+);
 
 const initialState = {
   items: [],

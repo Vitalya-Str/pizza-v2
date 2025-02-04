@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import pizzaLogoSvg from "../assets/img/pizza-logo.svg";
-import Search from "./Search/Search";
+import pizzaLogoSvg from "../../assets/img/pizza-logo.svg";
+import Search from "../Search/Search";
 import { useSelector } from "react-redux";
-import { cartSelector } from "./redux/slice/cartSlice";
+import { cartSelector, Item } from "../redux/slice/cartSlice";
 import { FC, useEffect, useRef } from "react";
 
 export const Header: FC = () => {
@@ -12,7 +12,7 @@ export const Header: FC = () => {
 
   const location = useLocation();
 
-  const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
+  const totalCount = items.reduce((sum: number, item: Item) => sum + item.count, 0);
 
   useEffect(() => {
     if (isMounted) {
@@ -20,7 +20,7 @@ export const Header: FC = () => {
       localStorage.setItem("cart", json);
     }
 
-    isMounted.current = true; 
+    isMounted.current = true;
   }, [items]);
 
   return (

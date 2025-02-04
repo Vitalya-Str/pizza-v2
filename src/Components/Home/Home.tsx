@@ -4,18 +4,23 @@ import { PizzaBlock } from "../PizzaBlock/PizzaBlock";
 import { ListType, Sort } from "./Sort";
 import { Categories } from "./Categories";
 import { useDispatch, useSelector } from "react-redux";
-import { filterSelector, setCategoryIndex, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
+import { filterSelector, setCategoryIndex, setCurrentPage, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
 import { fetchPizzasItems, pizzaSelector, setItems } from "../redux/slice/pizzaSlice";
 import QueryString from "qs";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../Pagination/Pagination";
 
 export const Home: FC = memo(() => {
-  const { category, sortList, orderType, searchItem } = useSelector(filterSelector);
+  const { category, sortList, orderType, searchItem, currentPage } = useSelector(filterSelector);
   const { items, status } = useSelector(pizzaSelector);
   const navigate = useNavigate();
   const isSearch = useRef(false);
 
   const dispatch = useDispatch();
+
+  const onChangePage = (value: number) => {
+    dispatch(setCurrentPage(value));
+  };
 
   const onOrderType = (text: "asc" | "desc") => {
     dispatch(setOrderType(text));
@@ -53,13 +58,14 @@ export const Home: FC = memo(() => {
       category,
       sortList: sortList.sortProperty,
       orderType,
+      currentPage,
     });
     navigate(`?${queryString}`);
-  }, [category, sortList.sortProperty, orderType]);
+  }, [category, sortList.sortProperty, orderType, currentPage]);
 
   const setPizzasItem = () => {
     //@ts-ignore
-    dispatch(fetchPizzasItems({ searchPizza, categoryId, sortList, orderType }));
+    dispatch(fetchPizzasItems({ searchPizza, categoryId, sortList, orderType, currentPage }));
   };
 
   useEffect(() => {
@@ -68,7 +74,7 @@ export const Home: FC = memo(() => {
     if (!isSearch.current) {
       setPizzasItem();
     }
-  }, [categoryId, sortList.sortProperty, orderType, searchPizza]);
+  }, [categoryId, sortList.sortProperty, orderType, searchPizza, currentPage]);
   return (
     <>
       <div className="container">
@@ -82,6 +88,7 @@ export const Home: FC = memo(() => {
             ? [...new Array(8)].map((_, i) => <Skeleton key={i} />)
             : items.map((pizza: any) => <PizzaBlock key={pizza.id} {...pizza} />)}
         </div>
+        <Pagination onChangePage={(value: number) => onChangePage(value)} />
       </div>
     </>
   );
