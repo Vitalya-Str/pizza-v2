@@ -1,6 +1,6 @@
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Pizza: FC = () => {
   const [pizza, setPizza] = useState<{
@@ -32,6 +32,9 @@ const Pizza: FC = () => {
         <h2 className="content__title">{pizza.title}</h2>
         <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg" alt="img" />
         <div> Цена: {pizza.price} Р</div>
+        <Link to="/">
+          <button className="button button--outline button--add"> Назад</button>
+        </Link>
       </div>
     </>
   );

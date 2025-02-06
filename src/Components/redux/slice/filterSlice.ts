@@ -46,6 +46,7 @@ const filterSlice = createSlice({
       state.category = Number(action.payload.category);
       state.sortList = action.payload.sortList;
       state.orderType = action.payload.orderType;
+      state.currentPage = action.payload.currentPage;
     },
   },
 });

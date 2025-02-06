@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterSelector, setCategoryIndex, setCurrentPage, setFilter, setOrderType, setSortList } from "../redux/slice/filterSlice";
 import { fetchPizzasItems, pizzaSelector, setItems } from "../redux/slice/pizzaSlice";
 import QueryString from "qs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../Pagination/Pagination";
 
 export const Home: FC = memo(() => {
@@ -17,6 +17,7 @@ export const Home: FC = memo(() => {
   const isSearch = useRef(false);
 
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
 
   const onChangePage = (value: number) => {
     dispatch(setCurrentPage(value));
@@ -35,23 +36,22 @@ export const Home: FC = memo(() => {
   const categoryId = category === 0 ? "" : `&category=${category}`;
   const searchPizza = !searchItem ? "" : `&search=${searchItem}`;
 
-  // useEffect(() => {
-  //   if (window.location.search) {
-  //     const params = QueryString.parse(window.location.search.substring(1));
+  useEffect(() => {
+    const category = searchParams.get("category") || 0;
+    const sortList = searchParams.get("sortList") || "rating";
+    const orderType = searchParams.get("orderType") || "asc";
+    const currentPage = searchParams.get("currentPage") || 1;
 
-  //     const sortList = list.find((obj) => obj.sortProperty === params.sortList);
-  //     if (sortList) {
-  //       dispatch(
-  //         setFilter({
-  //           ...params,
-  //           sortList,
-  //         })
-  //       );
-  //     }
-
-  //     isSearch.current = true;
-  //   }
-  // }, []);
+    dispatch(
+      setFilter({
+        category: Number(category),
+        sortList: { sortProperty: sortList as ListType["sortProperty"], name: "популярности" },
+        orderType: orderType as "asc",
+        currentPage: Number(currentPage),
+        searchItem: "",
+      })
+    );
+  }, []);
 
   useEffect(() => {
     const queryString = QueryString.stringify({
@@ -71,9 +71,10 @@ export const Home: FC = memo(() => {
   useEffect(() => {
     setPizzasItem();
     window.scrollTo(0, 0);
-    if (!isSearch.current) {
-      setPizzasItem();
-    }
+    // if (!isSearch.current) {
+    //   setPizzasItem();
+    // }
+    // isSearch.current = true;
   }, [categoryId, sortList.sortProperty, orderType, searchPizza, currentPage]);
   return (
     <>
